@@ -1,0 +1,33 @@
+# 服务拆分
+
+> 案例源码：https://gitee.com/xn2001/cloudcode/tree/master/01-cloud-demo
+
+**服务拆分注意事项**
+
+单一职责：不同微服务，不要重复开发相同业务
+
+数据独立：不要访问其它微服务的数据库
+
+面向服务：将自己的业务暴露为接口，供其它微服务调用
+
+![](README.assets/image-20210814201859633.png)
+
+cloud-demo：父工程，管理依赖
+
+- order-service：订单微服务，负责订单相关业务
+- user-service：用户微服务，负责用户相关业务
+
+要求：
+
+- 订单微服务和用户微服务都必须有**各自的数据库**，相互独立
+- 订单服务和用户服务**都对外暴露 Restful 的接口**
+- 订单服务如果需要查询用户信息，**只能调用用户服务的 Restful 接口**，不能查询用户数据库
+
+微服务项目下，打开 idea 中的 Service，可以很方便的启动。
+
+![](README.assets/image-20210814202423774.png)
+
+启动完成后，访问 http://localhost:8080/order/101
+
+![](README.assets/image-20210815021219868.png)
+
