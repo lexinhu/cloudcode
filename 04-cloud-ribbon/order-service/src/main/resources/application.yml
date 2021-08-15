@@ -1,0 +1,32 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: orderservice
+  datasource:
+    url: jdbc:mysql://localhost:3306/cloud_order?useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis:
+  type-aliases-package: com.xn2001.user.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    com.xn2001: debug
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+#userservice: # 给需要调用的微服务配置负载均衡规则，orderservice服务去调用userservice服务
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule # 负载均衡规则
+
+# 开启饥饿加载
+ribbon:
+  eager-load:
+    enabled: true
+    clients: userservice # 项目启动时直接去拉取userservice的集群，多个用","隔开
