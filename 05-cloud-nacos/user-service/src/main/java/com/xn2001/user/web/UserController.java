@@ -6,6 +6,7 @@ import com.xn2001.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,23 +18,23 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @RestController
 @RequestMapping("/user")
-//@RefreshScope
+//@RefreshScope //搭配 @Value 使用
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @Value("${pattern.dateformat}")
-    private String dateformat;
+    //@Value("${pattern.dateformat}")
+    //private String dateformat;
 
     @Autowired
     private PatternProperties patternProperties;
 
-    @GetMapping("now")
-    public String now(){
-        //格式化时间
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateformat));
-    }
+    //@GetMapping("now")
+    //public String now(){
+    //    //格式化时间
+    //    return LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateformat));
+    //}
 
     @GetMapping("now2")
     public String now2(){
