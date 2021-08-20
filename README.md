@@ -7,3 +7,5 @@
 03-cloud-eureka eureka服务中心demo
 
 04-cloud-ribbon ribbon负载均衡demo
+
+05-cloud-nacos nacos注册中心demo
