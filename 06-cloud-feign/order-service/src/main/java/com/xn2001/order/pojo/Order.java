@@ -1,5 +1,6 @@
 package com.xn2001.order.pojo;
 
+import com.xn2001.feign.pojo.User;
 import lombok.Data;
 
 @Data

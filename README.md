@@ -9,3 +9,5 @@
 04-cloud-ribbon Ribbon负载均衡demo
 
 05-cloud-nacos Nacos注册中心demo
+
+06-cloud-feign Feign远程调用demo

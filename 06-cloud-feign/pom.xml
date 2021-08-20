@@ -10,6 +10,7 @@
     <modules>
         <module>user-service</module>
         <module>order-service</module>
+        <module>feign-api</module>
     </modules>
 
     <packaging>pom</packaging>
