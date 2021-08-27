@@ -1,0 +1,46 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: orderservice
+  datasource:
+    url: jdbc:mysql://localhost:3306/cloud_order?useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      discovery:
+        cluster-name: HZ
+        ephemeral: false
+#        namespace: 9d3dfbd0-dad8-4d33-b873-05027f9c5b88 # 命名空间ID
+mybatis:
+  type-aliases-package: com.xn2001.user.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    com.xn2001: debug
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
+
+#userservice: # 给需要调用的微服务配置负载均衡规则，orderservice服务去调用userservice服务
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule # 负载均衡规则
+
+#开启饥饿加载
+ribbon:
+  eager-load:
+    enabled: true
+    clients: userservice # 项目启动时直接去拉取userservice的集群，多个用","隔开
+
+feign:
+  client:
+    config:
+      default: # default全局的配置
+        loggerLevel: BASIC # 日志级别，BASIC就是基本的请求和响应信息
+  httpclient:
+    enabled: true # 开启feign对HttpClient的支持
+    max-connections: 200 # 最大的连接数
+    max-connections-per-route: 50 # 每个路径的最大连接数
