@@ -13,3 +13,5 @@
 06-cloud-feign Feign远程调用demo
 
 07-cloud-gateway Gateway网关demo
+
+08-rabbitmq-demo rabbitmq消息队列

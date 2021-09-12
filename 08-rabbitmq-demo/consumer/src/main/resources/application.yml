@@ -1,0 +1,13 @@
+logging:
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
+spring:
+  rabbitmq:
+    host: 192.168.211.128
+    port: 5672
+    virtual-host: /
+    username: admin
+    password: 123456
+    listener:
+      simple:
+        prefetch: 1 # 每次只能获取一条消息，处理完成才能获取下一个消息
