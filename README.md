@@ -15,3 +15,5 @@
 07-cloud-gateway Gateway网关demo
 
 08-rabbitmq-demo rabbitmq消息队列
+
+09-elasticsearch-hotel-demo elasticsearch搜索引擎
