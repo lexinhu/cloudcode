@@ -3,7 +3,7 @@ package com.xn2001.hotel;
 import com.alibaba.fastjson.JSON;
 import com.xn2001.hotel.pojo.Hotel;
 import com.xn2001.hotel.pojo.HotelDoc;
-import com.xn2001.hotel.service.IHotelService;
+import com.xn2001.hotel.service.HotelService;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -35,7 +35,7 @@ public class HotelDocumentTest {
     private RestHighLevelClient restHighLevelClient;
 
     @Autowired
-    private IHotelService hotelService;
+    private HotelService hotelService;
 
     @Test
     void testInit() {

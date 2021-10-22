@@ -17,6 +17,8 @@ public class HotelDoc {
     private String business;
     private String location;
     private String pic;
+    private Object distance;
+    private Boolean isAD;
 
     public HotelDoc(Hotel hotel) {
         this.id = hotel.getId();

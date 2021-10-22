@@ -11,6 +11,8 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
@@ -21,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,14 +34,14 @@ import java.util.Map;
 @SpringBootTest
 public class HotelSearchTest {
 
-    private RestHighLevelClient restHighLevelClient;
+    private RestHighLevelClient client;
 
     @Test
     public void match_All() throws IOException {
         SearchRequest request = new SearchRequest("hotel");
         request.source()
                 .query(QueryBuilders.matchAllQuery());
-        SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
         SearchHits searchHits = response.getHits();
         System.out.println("hits.getTotalHits().条数 = " + searchHits.getTotalHits().value);
         SearchHit[] hits = searchHits.getHits();
@@ -54,7 +57,7 @@ public class HotelSearchTest {
         SearchRequest request = new SearchRequest("hotel");
         request.source()
                 .query(QueryBuilders.matchQuery("all", "如家"));
-        SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
         SearchHits searchHits = response.getHits();
         System.out.println("hits.getTotalHits().条数 = " + searchHits.getTotalHits().value);
         SearchHit[] hits = searchHits.getHits();
@@ -77,7 +80,7 @@ public class HotelSearchTest {
                                 .filter(QueryBuilders.rangeQuery("price").lte(300))
                 );
         // 3.发送请求
-        SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
         // 4.解析响应
         SearchHits searchHits = response.getHits();
         System.out.println("hits.getTotalHits().条数 = " + searchHits.getTotalHits().value);
@@ -104,7 +107,7 @@ public class HotelSearchTest {
         // 2.3.分页 from、size
         request.source().from(0).size(5);
         // 3.发送请求
-        SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
         // 4.解析响应
         SearchHits searchHits = response.getHits();
         System.out.println("hits.getTotalHits().条数 = " + searchHits.getTotalHits().value);
@@ -126,7 +129,7 @@ public class HotelSearchTest {
         // 2.2.高亮
         request.source().highlighter(new HighlightBuilder().field("name").requireFieldMatch(false));
         // 3.发送请求
-        SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
         // 4.解析响应
         handleResponse(response);
     }
@@ -166,7 +169,7 @@ public class HotelSearchTest {
         SearchRequest request = new SearchRequest("hotel");
         request.source()
                 .query(QueryBuilders.multiMatchQuery("如家", "name", "brand"));
-        SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
         SearchHits searchHits = response.getHits();
         System.out.println("hits.getTotalHits().条数 = " + searchHits.getTotalHits().value);
         SearchHit[] hits = searchHits.getHits();
@@ -177,16 +180,29 @@ public class HotelSearchTest {
         }
     }
 
+    @Test
+    public void testAggregation() throws IOException {
+        SearchRequest request = new SearchRequest("hotel");
+        request.source().aggregation(AggregationBuilders.terms("brandAgg").field("brand").size(20));
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+        Terms brandAgg = response.getAggregations().get("brandAgg");
+        List<? extends Terms.Bucket> buckets = brandAgg.getBuckets();
+        for (Terms.Bucket bucket : buckets) {
+            String key = bucket.getKeyAsString();
+            System.out.println("key = " + key);
+        }
+    }
+
 
     @BeforeEach
     void init() {
-        this.restHighLevelClient = new RestHighLevelClient(RestClient.builder(
+        this.client = new RestHighLevelClient(RestClient.builder(
                 HttpHost.create("http://192.168.211.128:9200")
         ));
     }
 
     @AfterEach
     void down() throws IOException {
-        this.restHighLevelClient.close();
+        this.client.close();
     }
 }

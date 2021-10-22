@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>黑马旅游</title>
+  <title>小湖旅游网——elasticsearch案例</title>
 
   <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
   <link rel="stylesheet" href="./css/index.css"/>
@@ -15,13 +15,12 @@
   <div style="width: 70%;text-align: center;margin: auto;">
     <div class="banner">
       <div class="logo">
-        <img src="./img/heima.png" alt="1"/>
         <span>
-          <div class="logo-ch">黑马旅游</div>
-          <div class="logo-en">www.itheima.com</div>
+          <div class="logo-ch">小湖旅游</div>
+          <div class="logo-en">www.xn2001.com</div>
         </span>
       </div>
-      <div >
+      <div>
         <input type="checkbox" id="toggle-button" v-model="isTest">
         <!--label中的for跟input的id绑定。作用是在点击label时选中input或者取消选中input-->
         <label for="toggle-button" class="button-label">
@@ -120,7 +119,7 @@
           <div style="text-align: left; width: 15%;">
             <div>
               <b style="color: #f60;">￥</b> <span id='hotel-price'>{{hotel.price}}</span> <span
-                style="font-size: 0.2em; color: #999;">起</span>
+              style="font-size: 0.2em; color: #999;">起</span>
             </div>
             <div class='btn'>立即预定</div>
             <div>
@@ -189,7 +188,7 @@
       map: {},// 地图对象
       loc: "", // 地图标记
       ml: 0, // 控制地图位置
-      geolocation:{}, // 定位系统
+      geolocation: {}, // 定位系统
       loading: false, // 是否在定位
       currentHotel: {},
       ops: [],
@@ -198,8 +197,8 @@
       isFixed: false,
       testFilterData: {
         "city": ["上海", "北京", "深圳", "杭州"],
-        "starName": ["四星","五星","二钻","三钻","四钻","五钻"],
-        "brand": ["7天酒店",  "如家","速8", "皇冠假日","华美达","万怡","喜来登","万豪","和颐","希尔顿"],
+        "starName": ["四星", "五星", "二钻", "三钻", "四钻", "五钻"],
+        "brand": ["7天酒店", "如家", "速8", "皇冠假日", "华美达", "万怡", "喜来登", "万豪", "和颐", "希尔顿"],
       },
     },
     watch: {
@@ -293,7 +292,7 @@
           this.show = false
         }
       },
-      handleSearch(){
+      handleSearch() {
         this.search();
         this.getFilter();
       },
@@ -308,26 +307,26 @@
             this.ops = resp.data;
           })
           .catch(e => {
-            if(this.isTest){
+            if (this.isTest) {
               this.ops = ["万豪", "如家", "喜来登"]
-            }else{
+            } else {
               this.ops = []
             }
             console.log(e);
           })
       },
       getFilter() {
-        if(this.isTest){
+        if (this.isTest) {
           this.filterList = this.testFilterData;
           return;
         }
         // 准备参数
-        const {filters: {price: ps, ... fs}, ...params} = this.params;
-        for( _k in fs){
+        const {filters: {price: ps, ...fs}, ...params} = this.params;
+        for (_k in fs) {
           params[_k] = fs[_k];
         }
         // 处理价格
-        if(ps){
+        if (ps) {
           let pArr = ps.split("-");
           params.minPrice = parseInt(pArr[0]);
           let max = parseInt(pArr[1]);
@@ -344,12 +343,12 @@
       },
       searchByMap(location) {
         // 准备参数
-        const {filters: {price: ps, ... fs}, ...params} = this.params;
-        for( _k in fs){
+        const {filters: {price: ps, ...fs}, ...params} = this.params;
+        for (_k in fs) {
           params[_k] = fs[_k];
         }
         // 处理价格
-        if(ps){
+        if (ps) {
           let pArr = ps.split("-");
           params.minPrice = parseInt(pArr[0]);
           let max = parseInt(pArr[1]);
@@ -369,14 +368,134 @@
             this.totalPage = Math.floor((this.total + 5 - 1) / 5);
             if (location) {
               this.setMapCenter(location);
-            } else if(this.hotels && this.hotels.length > 0){
+            } else if (this.hotels && this.hotels.length > 0) {
               this.setMapCenter(this.hotels[0].location);
             }
             this.initMarker();
           })
           .catch(err => {
             console.log(err)
-            this.hotels = [{"id":60223,"name":"上海希尔顿酒店","address":"静安华山路250号","price":2688,"score":37,"brand":"希尔顿","city":"上海","starName":"五星级","business":"静安寺地区","location":"31.219306, 121.445427","pic":"https://m.tuniucdn.com/filebroker/cdn/res/92/10/9210e74442aceceaf6e196d61fc3b6b1_w200_h200_c1_t0.jpg"},{"id":60922,"name":"上海虹桥祥源希尔顿酒店","address":"红松东路1116号","price":1108,"score":45,"brand":"希尔顿","city":"上海","starName":"五钻","business":"虹桥地区","location":"31.18746, 121.395312","pic":"https://m.tuniucdn.com/fb3/s1/2n9c/tQRqDTFkHnHzMZiDKjcGV81ekvc_w200_h200_c1_t0.jpg"},{"id":309208,"name":"北京王府井希尔顿酒店","address":"王府井东街8号","price":1679,"score":46,"brand":"希尔顿","city":"北京","starName":"五钻","business":"天安门/王府井地区","location":"39.914539, 116.413392","pic":"https://m.tuniucdn.com/fb2/t1/G6/M00/52/10/Cii-TF3ePt2IX9UEAALb6VYBSmoAAGKMgGsuW8AAtwB147_w200_h200_c1_t0.jpg"},{"id":395434,"name":"北京希尔顿酒店","address":"东三环北路东方路1号","price":350,"score":45,"brand":"希尔顿","city":"北京","starName":"五星级","business":"燕莎/朝阳公园商业区","location":"39.952703, 116.462387","pic":"https://m.tuniucdn.com/fb3/s1/2n9c/3fwNbKGhk6XCrkdVyxwhC5uGpLVy_w200_h200_c1_t0.jpg"},{"id":395702,"name":"北京首都机场希尔顿酒店","address":"首都机场3号航站楼三经路1号","price":222,"score":46,"brand":"希尔顿","city":"北京","starName":"五钻","business":"首都机场/新国展地区","location":"40.048969, 116.619566","pic":"https://m.tuniucdn.com/fb2/t1/G6/M00/52/10/Cii-U13ePtuIMRSjAAFZ58NGQrMAAGKMgADZ1QAAVn_167_w200_h200_c1_t0.jpg"},{"id":615175,"name":"千岛湖滨江希尔顿度假酒店","address":"环湖北路600号","price":1265,"score":47,"brand":"希尔顿","city":"杭州","starName":"五钻","business":"千岛湖镇","location":"29.603634, 119.077596","pic":"https://m.tuniucdn.com/fb3/s1/2n9c/6qzYeUrrXsH5H3cd9bMXLz8MJtT_w200_h200_c1_t0.jpg"},{"id":2351601,"name":"深圳蛇口希尔顿南海酒店","address":"望海路1177号","price":509,"score":47,"brand":"希尔顿","city":"深圳","starName":"五钻","business":"深圳湾口岸/蛇口","location":"22.479373, 113.916013","pic":"https://m.tuniucdn.com/fb2/t1/G6/M00/45/EA/Cii-TF3ZpXOIfa6fAAJjiUOiuYgAAFrtgDtgpQAAmOh799_w200_h200_c1_t0.jpg"},{"id":368701368,"name":"深圳大中华希尔顿酒店","address":"福田深南大道1003号","price":1666,"score":46,"brand":"希尔顿","city":"深圳","starName":"五钻","business":"会展中心/CBD","location":"22.539313, 114.069763","pic":"https://m.tuniucdn.com/fb3/s1/2n9c/4EnHseZ73LXdFJY7DSdJ8xqAcjXe_w200_h200_c1_t0.jpg"},{"id":2048042240,"name":"北京大兴希尔顿酒店","address":"高米店南里18号楼","price":1283,"score":48,"brand":"希尔顿","city":"北京","starName":"五钻","business":"大兴北京新机场地区","location":"39.76875, 116.339199","pic":"https://m.tuniucdn.com/fb3/s1/2n9c/3B32F8zSU2CJCWzs1hoH2o4WcquR_w200_h200_c1_t0.jpg"},{"id":2056105938,"name":"北京通州北投希尔顿酒店","address":"新华东街289号2号楼","price":1068,"score":48,"brand":"希尔顿","city":"北京","starName":"五钻","business":"果园环岛/通州区","location":"39.908805, 116.659748","pic":"https://m.tuniucdn.com/fb3/s1/2n9c/NGKdpec3tZJNUUNWJ5pd67Cp5AY_w200_h200_c1_t0.png"}]
+            this.hotels = [{
+              "id": 60223,
+              "name": "上海希尔顿酒店",
+              "address": "静安华山路250号",
+              "price": 2688,
+              "score": 37,
+              "brand": "希尔顿",
+              "city": "上海",
+              "starName": "五星级",
+              "business": "静安寺地区",
+              "location": "31.219306, 121.445427",
+              "pic": "https://m.tuniucdn.com/filebroker/cdn/res/92/10/9210e74442aceceaf6e196d61fc3b6b1_w200_h200_c1_t0.jpg"
+            }, {
+              "id": 60922,
+              "name": "上海虹桥祥源希尔顿酒店",
+              "address": "红松东路1116号",
+              "price": 1108,
+              "score": 45,
+              "brand": "希尔顿",
+              "city": "上海",
+              "starName": "五钻",
+              "business": "虹桥地区",
+              "location": "31.18746, 121.395312",
+              "pic": "https://m.tuniucdn.com/fb3/s1/2n9c/tQRqDTFkHnHzMZiDKjcGV81ekvc_w200_h200_c1_t0.jpg"
+            }, {
+              "id": 309208,
+              "name": "北京王府井希尔顿酒店",
+              "address": "王府井东街8号",
+              "price": 1679,
+              "score": 46,
+              "brand": "希尔顿",
+              "city": "北京",
+              "starName": "五钻",
+              "business": "天安门/王府井地区",
+              "location": "39.914539, 116.413392",
+              "pic": "https://m.tuniucdn.com/fb2/t1/G6/M00/52/10/Cii-TF3ePt2IX9UEAALb6VYBSmoAAGKMgGsuW8AAtwB147_w200_h200_c1_t0.jpg"
+            }, {
+              "id": 395434,
+              "name": "北京希尔顿酒店",
+              "address": "东三环北路东方路1号",
+              "price": 350,
+              "score": 45,
+              "brand": "希尔顿",
+              "city": "北京",
+              "starName": "五星级",
+              "business": "燕莎/朝阳公园商业区",
+              "location": "39.952703, 116.462387",
+              "pic": "https://m.tuniucdn.com/fb3/s1/2n9c/3fwNbKGhk6XCrkdVyxwhC5uGpLVy_w200_h200_c1_t0.jpg"
+            }, {
+              "id": 395702,
+              "name": "北京首都机场希尔顿酒店",
+              "address": "首都机场3号航站楼三经路1号",
+              "price": 222,
+              "score": 46,
+              "brand": "希尔顿",
+              "city": "北京",
+              "starName": "五钻",
+              "business": "首都机场/新国展地区",
+              "location": "40.048969, 116.619566",
+              "pic": "https://m.tuniucdn.com/fb2/t1/G6/M00/52/10/Cii-U13ePtuIMRSjAAFZ58NGQrMAAGKMgADZ1QAAVn_167_w200_h200_c1_t0.jpg"
+            }, {
+              "id": 615175,
+              "name": "千岛湖滨江希尔顿度假酒店",
+              "address": "环湖北路600号",
+              "price": 1265,
+              "score": 47,
+              "brand": "希尔顿",
+              "city": "杭州",
+              "starName": "五钻",
+              "business": "千岛湖镇",
+              "location": "29.603634, 119.077596",
+              "pic": "https://m.tuniucdn.com/fb3/s1/2n9c/6qzYeUrrXsH5H3cd9bMXLz8MJtT_w200_h200_c1_t0.jpg"
+            }, {
+              "id": 2351601,
+              "name": "深圳蛇口希尔顿南海酒店",
+              "address": "望海路1177号",
+              "price": 509,
+              "score": 47,
+              "brand": "希尔顿",
+              "city": "深圳",
+              "starName": "五钻",
+              "business": "深圳湾口岸/蛇口",
+              "location": "22.479373, 113.916013",
+              "pic": "https://m.tuniucdn.com/fb2/t1/G6/M00/45/EA/Cii-TF3ZpXOIfa6fAAJjiUOiuYgAAFrtgDtgpQAAmOh799_w200_h200_c1_t0.jpg"
+            }, {
+              "id": 368701368,
+              "name": "深圳大中华希尔顿酒店",
+              "address": "福田深南大道1003号",
+              "price": 1666,
+              "score": 46,
+              "brand": "希尔顿",
+              "city": "深圳",
+              "starName": "五钻",
+              "business": "会展中心/CBD",
+              "location": "22.539313, 114.069763",
+              "pic": "https://m.tuniucdn.com/fb3/s1/2n9c/4EnHseZ73LXdFJY7DSdJ8xqAcjXe_w200_h200_c1_t0.jpg"
+            }, {
+              "id": 2048042240,
+              "name": "北京大兴希尔顿酒店",
+              "address": "高米店南里18号楼",
+              "price": 1283,
+              "score": 48,
+              "brand": "希尔顿",
+              "city": "北京",
+              "starName": "五钻",
+              "business": "大兴北京新机场地区",
+              "location": "39.76875, 116.339199",
+              "pic": "https://m.tuniucdn.com/fb3/s1/2n9c/3B32F8zSU2CJCWzs1hoH2o4WcquR_w200_h200_c1_t0.jpg"
+            }, {
+              "id": 2056105938,
+              "name": "北京通州北投希尔顿酒店",
+              "address": "新华东街289号2号楼",
+              "price": 1068,
+              "score": 48,
+              "brand": "希尔顿",
+              "city": "北京",
+              "starName": "五钻",
+              "business": "果园环岛/通州区",
+              "location": "39.908805, 116.659748",
+              "pic": "https://m.tuniucdn.com/fb3/s1/2n9c/NGKdpec3tZJNUUNWJ5pd67Cp5AY_w200_h200_c1_t0.png"
+            }]
             this.total = 271;
             this.totalPage = 28;
           })
@@ -423,17 +542,17 @@
         }
         this.markHotels();
       },
-      setMapCenter(location){
+      setMapCenter(location) {
         this.map.setCenter(this.location(location));
       },
-      markHotels(){
+      markHotels() {
         this.hotels.forEach((h, i) => {
           // 将创建的点标记添加到已有的地图实例：
           let marker = new AMap.Marker({
             position: this.location(h.location),   // 经纬度构成的一维数组[116.39, 39.9]
             title: h.name,
             offset: new AMap.Pixel(0, 0),
-            anchor:'bottom-center'
+            anchor: 'bottom-center'
           });
           marker.vid = h.id;
           this.map.add(marker);
@@ -475,26 +594,26 @@
         marker.setPosition(position);
         marker.vid = id;
       },
-      getGeoLoc(){
+      getGeoLoc() {
         this.loading = true;
-        this.geolocation.getCurrentPosition((status,result) => {
+        this.geolocation.getCurrentPosition((status, result) => {
           this.loading = false;
-          if(status === 'complete'){
+          if (status === 'complete') {
             console.log("successs")
             // https://a.amap.com/jsapi/static/image/plugin/point.png
-            this.addMaker('//a.amap.com/jsapi/static/image/plugin/point.png', result.position.lng,result.position.lat);
+            this.addMaker('//a.amap.com/jsapi/static/image/plugin/point.png', result.position.lng, result.position.lat);
             if (this.params.page !== 1) {
               this.params.page = 1;
               this.loc = result.position.lat + ", " + result.position.lng;
             } else {
               this.searchByMap(result.position.lat + ", " + result.position.lng);
             }
-          }else{
+          } else {
             console.log("err", status)
           }
         });
       },
-      addMaker(iconUrl, lng, lat){
+      addMaker(iconUrl, lng, lat) {
         // 创建 AMap.Icon 实例：
         let icon = new AMap.Icon({
           size: new AMap.Size(25, 25),    // 图标尺寸
@@ -510,7 +629,7 @@
           icon: icon, // 添加 Icon 实例
           title: '北京',
           zoom: 13,
-          anchor:"center"
+          anchor: "center"
         });
         this.map.add(marker);
       }
