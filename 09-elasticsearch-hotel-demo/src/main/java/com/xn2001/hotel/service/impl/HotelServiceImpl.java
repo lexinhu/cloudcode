@@ -77,33 +77,38 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
         try {
             //构建复杂查询
             buildBasicQuery(params, request);
+            request.source().size(0);
             //构建聚合查询
-            buildAggregation(request, "brand");
-            buildAggregation(request, "city");
-            buildAggregation(request, "star");
+            buildAggregation(request);
+            //发送请求
             SearchResponse response = client.search(request, RequestOptions.DEFAULT);
             //解析聚合结果
-            List<String> brand = getAggName(response.getAggregations(), "brand");
-            List<String> city = getAggName(response.getAggregations(), "city");
-            List<String> starName = getAggName(response.getAggregations(), "starName");
+            List<String> brand = getAggByName(response.getAggregations(), "brandAgg");
+            List<String> city = getAggByName(response.getAggregations(), "cityAgg");
+            List<String> starName = getAggByName(response.getAggregations(), "starAgg");
             HashMap<String, List<String>> result = new HashMap<>();
-            result.put("品牌",brand);
-            result.put("城市",city);
-            result.put("星级",starName);
+            //返回
+            result.put("brand", brand);
+            result.put("city", city);
+            result.put("starName", starName);
             return result;
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
     }
 
-    private void buildAggregation(SearchRequest request, String fieldName) {
-        request.source().aggregation(AggregationBuilders.terms(fieldName).field(fieldName));
+    private void buildAggregation(SearchRequest request) {
+        request.source()
+                .aggregation(AggregationBuilders.terms("brandAgg").field("brand").size(100))
+                .aggregation(AggregationBuilders.terms("cityAgg").field("city").size(100))
+                .aggregation(AggregationBuilders.terms("starAgg").field("starName").size(100)
+                );
     }
 
-    private List<String> getAggName(Aggregations aggregations, String aggName) {
-        Terms aggregation = aggregations.get(aggName);
-        List<? extends Terms.Bucket> buckets = aggregation.getBuckets();
-        ArrayList<String> list = new ArrayList<>();
+    private List<String> getAggByName(Aggregations aggregations, String aggName) {
+        Terms terms = aggregations.get(aggName);
+        List<? extends Terms.Bucket> buckets = terms.getBuckets();
+        List<String> list = new ArrayList<>();
         for (Terms.Bucket bucket : buckets) {
             String key = bucket.getKeyAsString();
             list.add(key);

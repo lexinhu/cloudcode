@@ -19,7 +19,7 @@ public class HotelDemoApplication {
     @Bean
     public RestHighLevelClient client() {
         return new RestHighLevelClient(RestClient.builder(
-                HttpHost.create("http://192.168.211.128:9200")
+                HttpHost.create("http://192.168.211.129:9200")
         ));
     }
 
