@@ -57,7 +57,7 @@ public class HotelDocumentTest {
     @Test
     void testGetDocumentById() throws IOException {
         // 1.准备Request
-        GetRequest hotel = new GetRequest("hotel", "61083");
+        GetRequest hotel = new GetRequest("hotel", "396506");
         // 2.发送请求，得到响应
         GetResponse hotelResponse = restHighLevelClient.get(hotel, RequestOptions.DEFAULT);
         // 3.解析响应结果
@@ -69,7 +69,7 @@ public class HotelDocumentTest {
 
     @Test
     void testDeleteDocumentById() throws IOException {
-        DeleteRequest hotel = new DeleteRequest("hotel", "61083");
+        DeleteRequest hotel = new DeleteRequest("hotel", "396506");
         restHighLevelClient.delete(hotel, RequestOptions.DEFAULT);
     }
 
@@ -102,7 +102,7 @@ public class HotelDocumentTest {
     @BeforeEach
     void init() {
         this.restHighLevelClient = new RestHighLevelClient(RestClient.builder(
-                HttpHost.create("http://192.168.211.128:9200")
+                HttpHost.create("http://192.168.211.129:9200")
         ));
     }
 

@@ -61,7 +61,7 @@
     display: none;
 }
 #toggle-button:checked + label.button-label{
-    background-color: #FF8800;
+    background-color: #51babd;
 }
 
 

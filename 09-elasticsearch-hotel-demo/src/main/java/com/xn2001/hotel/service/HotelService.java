@@ -11,4 +11,10 @@ import java.util.Map;
 public interface HotelService extends IService<Hotel> {
      PageResult search(RequestParams params);
      Map<String, List<String>> filters(RequestParams params);
+
+     List<String> getSuggestions(String prefix);
+
+     void insertById(Long id);
+
+     void deleteById(Long id);
 }

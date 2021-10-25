@@ -20,7 +20,7 @@
 .search-bar button {
     width: 20%;
     border: 1px solid #F80;
-    background-color: #F80;
+    background-color: #51babd;
     color: #fff;
     line-height: 28px;
     margin-left: -6px;
@@ -144,7 +144,7 @@ a:hover {
 }
 
 .btn-arrow:hover {
-    background-color: #FF8800;
+    background-color: #51babd;
     color: whitesmoke;
 }
 

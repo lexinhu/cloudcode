@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>小湖旅游网——elasticsearch案例</title>
+  <title>酒店查询</title>
 
   <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
   <link rel="stylesheet" href="./css/index.css"/>
@@ -14,21 +14,7 @@
 <div id="app" @click="showOps=false">
   <div style="width: 70%;text-align: center;margin: auto;">
     <div class="banner">
-      <div class="logo">
-        <span>
-          <div class="logo-ch">小湖旅游</div>
-          <div class="logo-en">www.xn2001.com</div>
-        </span>
-      </div>
-      <div>
-        <input type="checkbox" id="toggle-button" v-model="isTest">
-        <!--label中的for跟input的id绑定。作用是在点击label时选中input或者取消选中input-->
-        <label for="toggle-button" class="button-label">
-          <span class="circle"></span>
-          <span class="text on">测试</span>
-          <span class="text off">正式</span>
-        </label>
-      </div>
+
     </div>
     <!--关键字搜索-->
     <div class="search-bar">
@@ -282,6 +268,7 @@
         }
       },
       handleSearch() {
+        this.params.page = 1;
         this.search();
         this.getFilter();
       },
