@@ -123,6 +123,7 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
             CompletionSuggestion suggestions = suggest.getSuggestion("suggestions");
             List<CompletionSuggestion.Entry.Option> options = suggestions.getOptions();
             List<String> list = new ArrayList<>(options.size());
+            //解析建议结果
             for (CompletionSuggestion.Entry.Option option : options) {
                 String text = option.getText().toString();
                 list.add(text);
@@ -140,7 +141,6 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
             Hotel hotel = getById(id);
             // 转换为文档类型
             HotelDoc hotelDoc = new HotelDoc(hotel);
-
             IndexRequest request = new IndexRequest("hotel").id(hotel.getId().toString());
             request.source(JSON.toJSONString(hotelDoc), XContentType.JSON);
             client.index(request, RequestOptions.DEFAULT);
@@ -188,22 +188,17 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
         } else {
             boolQuery.must(QueryBuilders.matchQuery("all", key));
         }
-        //城市过滤
-        if (!StringUtils.isEmpty(params.getCity()))
-            boolQuery.filter(QueryBuilders.termQuery("city", params.getCity()));
-        //品牌过滤
-        if (!StringUtils.isEmpty(params.getBrand()))
-            boolQuery.filter(QueryBuilders.termQuery("brand", params.getBrand()));
-        //星级过滤
-        if (!StringUtils.isEmpty(params.getStarName()))
-            boolQuery.filter(QueryBuilders.termQuery("starName", params.getStarName()));
-        //价格过滤
-        if (params.getMaxPrice() != null && params.getMinPrice() != null)
-            boolQuery.filter(QueryBuilders.rangeQuery("price").gte(params.getMinPrice()).lte(params.getMaxPrice()));
+        //加入过滤条件
+        filterQuery(params, boolQuery);
+        //针对置顶的自定义算分
+        FunctionScoreQueryBuilder functionScoreQuery = topScore(boolQuery);
+        //丢回去查询条件
+        request.source().query(functionScoreQuery);
+    }
 
-        //算分
-        FunctionScoreQueryBuilder functionScoreQuery = QueryBuilders.functionScoreQuery(
-                //原始查询
+    private FunctionScoreQueryBuilder topScore(BoolQueryBuilder boolQuery) {
+        return QueryBuilders.functionScoreQuery(
+                //加入原始查询
                 boolQuery,
                 //function score
                 new FunctionScoreQueryBuilder.FilterFunctionBuilder[]{
@@ -213,8 +208,25 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
                                 ScoreFunctionBuilders.weightFactorFunction(10)
                         )
                 });
-        //丢回去查询条件
-        request.source().query(functionScoreQuery);
+    }
+
+    private void filterQuery(RequestParams params, BoolQueryBuilder boolQuery) {
+        //城市过滤
+        if (!StringUtils.isEmpty(params.getCity())) {
+            boolQuery.filter(QueryBuilders.termQuery("city", params.getCity()));
+        }
+        //品牌过滤
+        if (!StringUtils.isEmpty(params.getBrand())) {
+            boolQuery.filter(QueryBuilders.termQuery("brand", params.getBrand()));
+        }
+        //星级过滤
+        if (!StringUtils.isEmpty(params.getStarName())) {
+            boolQuery.filter(QueryBuilders.termQuery("starName", params.getStarName()));
+        }
+        //价格过滤
+        if (params.getMaxPrice() != null && params.getMinPrice() != null) {
+            boolQuery.filter(QueryBuilders.rangeQuery("price").gte(params.getMinPrice()).lte(params.getMaxPrice()));
+        }
     }
 
     private PageResult handleResponse(SearchResponse response) {
