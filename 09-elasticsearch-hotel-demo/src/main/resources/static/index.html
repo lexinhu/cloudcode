@@ -3,8 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>酒店查询</title>
-
+  <title>酒店查询-elasticsearch搜索案例</title>
   <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
   <link rel="stylesheet" href="./css/index.css"/>
   <link rel="stylesheet" href="./css/banner.css"/>
@@ -25,7 +24,7 @@
       </div>
       <div id="complete-box" v-show="showOps && ops.length > 0">
         <div v-for="(item, i) in ops" :key="i" @click="handleSearch" @mouseover="opsIndex = i"
-             :style='{"background-color": opsIndex===i ? "#EEE" : "#fff"}'>{{item}}
+             :style='{"background-color": opsIndex===i ? "#EEE" : "#fff"}' style="font-size: 17px">{{item}}
         </div>
       </div>
     </div>
@@ -67,8 +66,7 @@
       <div class="sort-items">
         <div class="sort-item" v-for="(item, i) in sortItems" :key="i">
           <a :class="{selected: params.sortBy===item.key}" @click="params.sortBy=item.key"
-             href="javascript:void(0)">{{item.text}}</a>
-          |
+             href="javascript:void(0)">{{item.text}}</a> |
         </div>
       </div>
 
@@ -83,7 +81,6 @@
     <div class="row-divider" style="margin-bottom: 5px; width: 100%"></div>
     <!--酒店列表-->
     <div style="display: flex; justify-content: space-between;">
-
       <div class="hotel-list">
         <div class="hotel-box" v-for="(hotel,i) in hotels" :key="i"
              style="display: flex;justify-content: space-between;" @mouseover="handleMarkerFocus(hotel)">
@@ -99,12 +96,11 @@
             <div class="address">
               位于 <span style="color: #BC8516;">{{hotel.business}}</span> 周边，{{hotel.address}}
             </div>
-            <div class="order"> 1分钟前有人预订了该酒店</div>
             <div v-if="hotel.distance" class="address">距离您 {{hotel.distance.toFixed(2)}} km</div>
           </div>
           <div style="text-align: left; width: 15%;">
             <div>
-              <b style="color: #f60;">￥</b> <span id='hotel-price'>{{hotel.price}}</span> <span
+              <b style="color: #57d974;">￥</b> <span id='hotel-price'>{{hotel.price}}</span> <span
               style="font-size: 0.2em; color: #999;">起</span>
             </div>
             <div class='btn'>立即预定</div>
@@ -128,6 +124,7 @@
 <script src="./js/vue.js"></script>
 <script src="./js/axios.min.js"></script>
 <script src="./js/amap.min.js"></script>
+<!--高德地图api-->
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=ddd292c88aa1bad9c04891a47724f40a"></script>
 
 
@@ -160,7 +157,8 @@
           key: "price",
           text: "价格",
         }
-      ],// 排序字段的假数据
+      ],
+      // 排序字段的假数据
       hotels: [],// 酒店数据
       total: 0, // 总条数
       totalPage: 0, // 总页数
@@ -248,7 +246,7 @@
         this.ml = o.offsetLeft;
       },
       handleKeyUp(e) {
-        if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode === 8) {
+        if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode === 8 || e.keyCode === 32) {
           // 用户输入的字符，需要自动补全
           this.getSuggestion();
         } else if (e.keyCode === 13) {
@@ -264,6 +262,7 @@
         } else if (e.keyCode === 40) {
           this.opsIndex = (this.opsIndex + 1) % this.ops.length;
         } else if (e.keyCode === 27) {
+          //Esc
           this.show = false
         }
       },

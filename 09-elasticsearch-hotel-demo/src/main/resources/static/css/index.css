@@ -1,40 +1,42 @@
 
 .search-bar{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: center;
+    height: 85px;
 }
 .input-box{
     display: flex;
-    width: 35%;
+    width: 40%;
 }
 .search-bar input {
-    border: 1px solid #F80;
+    border: 1px solid #e0cab1;
     width: 80%;
-    height: 28px;
-    line-height: 28px;
+    height: 35px;
+    line-height: 35px;
     vertical-align: top;
     border-radius: .25rem 0 0 .25rem;
 }
 
 .search-bar button {
     width: 20%;
-    border: 1px solid #F80;
-    background-color: #51babd;
+    border: 1px solid #e0cab1;
+    background-color: #358386f2;
     color: #fff;
-    line-height: 28px;
-    margin-left: -6px;
+    line-height: 35px;
+    margin-left: 3px;
     border-radius: 0 .25rem .25rem 0;
-    height: 28px;
+    height: 35px;
 }
 
 #complete-box{
-    margin-top: 28px;
+    margin-top: 158px;
     position: absolute;
     z-index: 99;
     text-align: left;
     border: 1px solid #f1f1f2;
-    width: 336px;
+    width: 420px;
     height: 120px;
     background-color: #fff;
 }
@@ -49,8 +51,8 @@
     font-size: 16px;
     font-family: "Arial", "PingFang SC", "Microsoft Yahei", "SimSun", sans-serif;
     color: #FFF;
-    background: #F80;
-    border-color: #F80;
+    background: #358386f2;
+    border-color: #f0e0ce;
     vertical-align: top;
     text-align: center;
     display: inline-block;
@@ -309,7 +311,7 @@ body {
 }
 
 .map-head {
-    line-height: 35px;
+    line-height: 40px;
 }
 
 .amap {
