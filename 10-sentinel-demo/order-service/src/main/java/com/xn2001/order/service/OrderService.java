@@ -1,5 +1,6 @@
 package com.xn2001.order.service;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.xn2001.feign.clients.UserClient;
 import com.xn2001.feign.pojo.User;
 import com.xn2001.order.mapper.OrderMapper;
@@ -27,20 +28,9 @@ public class OrderService {
         return order;
     }
 
-    /*@Autowired
-    private RestTemplate restTemplate;
+    @SentinelResource("goods")
+    public void queryGoods(){
+        System.err.println("查询商品");
+    }
 
-    public Order queryOrderById(Long orderId) {
-        // 1.查询订单
-        Order order = orderMapper.findById(orderId);
-        // 2.利用RestTemplate发起http请求，查询用户
-        // 2.1.url路径
-        String url = "http://userservice/user/" + order.getUserId();
-        // 2.2.发送http请求，实现远程调用
-        User user = restTemplate.getForObject(url, User.class);
-        // 3.封装user到Order
-        order.setUser(user);
-        // 4.返回
-        return order;
-    }*/
 }
