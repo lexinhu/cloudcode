@@ -1,6 +1,6 @@
 package com.xn2001.account.web;
 
-import com.xn2001.account.service.AccountService;
+import com.xn2001.account.service.AccountTCCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
 
     @Autowired
-    private AccountService accountService;
+    private AccountTCCService accountService;
 
     @PutMapping("/{userId}/{money}")
     public ResponseEntity<Void> deduct(@PathVariable("userId") String userId, @PathVariable("money") Integer money){
